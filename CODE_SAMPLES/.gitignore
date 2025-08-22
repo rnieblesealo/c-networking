@@ -1,0 +1,36 @@
+# Compiled object files
+*.o
+
+# Compiled binary files
+*.out
+*.exe
+
+# Backup files
+*~
+*.bak
+
+# Dependency files
+*.d
+
+# IDE or editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build directories
+build/
+bin/
+obj/
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp

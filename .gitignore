@@ -1,0 +1,27 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must be a folder
+Icon?
+
+# Thumbnails
+._*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Spotlight files
+.Spotlight-V100
+.Trashes
+
+# macOS Finder files
+*.swp
+*.swo
+
+# Other macOS specific files
+*.bak
+*.orig
+
