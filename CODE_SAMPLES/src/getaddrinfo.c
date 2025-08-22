@@ -11,7 +11,7 @@
 int main()
 {
 
-  const char *HOSTNAME = "www.example.com";
+  const char *HOSTNAME = "127.0.0.1";
   const char *PORT     = "3490";
 
   struct addrinfo  hints;
@@ -32,16 +32,22 @@ int main()
   }
 
   // Print the first result's IPv4
-  char res_ip4[MAX_P_ADDR_SIZE];
-  if (inet_ntop(
-          res->ai_addr->sa_family, res->ai_addr->sa_data, res_ip4, res->ai_addr->sa_len) <
-      0)
+  while (res != NULL)
   {
-    fprintf(stderr, "Failure converting resolved IPv4 to printable\n");
-    exit(EXIT_FAILURE);
-  }
+    char res_ip[MAX_P_ADDR_SIZE];
+    if (inet_ntop(res->ai_addr->sa_family,
+                  res->ai_addr->sa_data,
+                  res_ip,
+                  res->ai_addr->sa_len) < 0)
+    {
+      fprintf(stderr, "Failure converting resolved IPv4 to printable\n");
+      exit(EXIT_FAILURE);
+    }
 
-  fprintf(stdout, "First resolved IPv4: %s", res_ip4);
+    fprintf(stdout, "Resolved IP: %s\n", res_ip);
+
+    res = res->ai_next;
+  }
 
   exit(EXIT_SUCCESS);
 }
