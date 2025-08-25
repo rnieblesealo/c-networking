@@ -34,3 +34,6 @@ cmake_install.cmake
 
 # Temporary files
 *.tmp
+
+# Clang cache
+.cache/
