@@ -66,3 +66,15 @@ Port is used to match packet to a process' socket descriptor
 > Port 80 is good to test `connect()`; it takes in HTTP connections which are sent from pretty much every client that ever tries to access it
 
 ### 5.5 listen()
+
+#### Notes
+
+- IP `0.0.0.0` is a wildcard for all our host machine's network interfaces; if this is the IP we are listening on, we are listening on all our available network interfaces
+- This isn't blocking! It basically only sets up listening; but if we're looking to `accept()` then *that* will require blocking
+
+### 5.6 accept()
+
+#### Notes
+
+- For some reason, if we have an `accept()`, any prints must have a newline at the end or else they'll be held back
+> I have no fucking idea why this happens what the fuck
