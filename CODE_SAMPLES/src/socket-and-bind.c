@@ -44,7 +44,7 @@ int main()
 
   // Make socket
 
-  int sockfd = socket(PF_INET, AF_INET, 0);
+  int sockfd = socket(PF_INET, SOCK_STREAM, 0);
   if (sockfd < 0)
   {
     perror("socket() failure");
@@ -52,6 +52,10 @@ int main()
   }
 
   printf("Created socket with descriptor %d\n", sockfd);
+
+  // Allow reuse of port, TODO: How exactly does this look like working? Does it just enable overriding the bind with a new one?
+  int yes = 1;
+  setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
 
   // Bind
   if (bind(sockfd, res->ai_addr, res->ai_addr->sa_len) != 0)
@@ -61,4 +65,6 @@ int main()
   }
 
   printf("Bind OK!\n");
+
+  freeaddrinfo(res);
 }
