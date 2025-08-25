@@ -81,5 +81,17 @@ int main(int argc, char *argv[])
 
   puts("Connection established!");
 
+  // Receive a message
+  const size_t MSG_BUF_LEN = 64;
+  char         msg_buf[MSG_BUF_LEN];
+  int          received_bytes;
+  if ((received_bytes = recv(incoming_sockfd, msg_buf, MSG_BUF_LEN, 0)) < 0)
+  {
+    perror("Receive failure");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("Received message %s\n", msg_buf);
+
   freeaddrinfo(res);
 }

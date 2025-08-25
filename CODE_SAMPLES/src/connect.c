@@ -87,4 +87,21 @@ int main(int argc, char *argv[])
   };
 
   printf("Connection successful!\n");
+
+  // Send a mesage
+  const size_t MAX_MSG_LEN = 64;
+  char         msg[MAX_MSG_LEN];
+
+  sprintf(msg, "Hello!");
+
+  int sent_bytes;
+  if ((sent_bytes = send(sockfd, msg, strlen(msg), 0)) < 0)
+  {
+    perror("Send failure");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("Sent message %s\n", msg);
+
+  freeaddrinfo(res);
 }
