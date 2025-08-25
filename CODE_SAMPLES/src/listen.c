@@ -57,7 +57,29 @@ int main(int argc, char *argv[])
   }
 
   // Listen for connections
-  listen(sockfd, BACKLOG_SIZE);
+  if (listen(sockfd, BACKLOG_SIZE) != 0)
+  {
+    perror("Listen failure");
+    exit(EXIT_FAILURE);
+  }
 
-  printf("Listening for connections on host %s, port %s...", ipstr, PORT);
+  printf("Listening for connections on host %s, port %s...\n", ipstr, PORT);
+
+  // Accept a new connection
+  struct sockaddr_storage
+      incoming_addr; // Will be written to here; why are we using generic instead of direct type?
+  socklen_t incoming_addr_size = sizeof(
+      incoming_addr); // Size of address struct; I think is passed as pointer to update based on actual size of incoming addr
+
+  int incoming_sockfd =
+      accept(sockfd, (struct sockaddr *)&incoming_addr, &incoming_addr_size);
+  if (incoming_sockfd < 0)
+  {
+    perror("Accept failure");
+    exit(EXIT_FAILURE);
+  }
+
+  puts("Connection established!");
+
+  freeaddrinfo(res);
 }
