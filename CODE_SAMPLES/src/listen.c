@@ -93,5 +93,12 @@ int main(int argc, char *argv[])
 
   printf("Received message %s\n", msg_buf);
 
+  // Close client socket
+  close(incoming_sockfd);
+
+  // Refuse any more incoming conns.
+  close(sockfd);
+
+  // Free
   freeaddrinfo(res);
 }

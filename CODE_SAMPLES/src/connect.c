@@ -103,5 +103,9 @@ int main(int argc, char *argv[])
 
   printf("Sent message %s\n", msg);
 
+  // Close the socket
+  close(sockfd);
+
+  // Free addrinfo
   freeaddrinfo(res);
 }
