@@ -74,7 +74,40 @@ Port is used to match packet to a process' socket descriptor
 
 ### 5.6 accept()
 
+This will return a new socket file descriptor responsible for the accepted connection; the original socket descriptor is still listening for new connections  
+
+Pretty simple
+
 #### Notes
 
 - For some reason, if we have an `accept()`, any prints must have a newline at the end or else they'll be held back
 > I have no fucking idea why this happens what the fuck
+- Most systems typically cap the backlog size to about 20 by default
+
+### 5.7 send() and recv()
+
+#### Notes
+
+- `send()` payload caps out at about 1K, be careful with this!
+- If `recv()` ever returns 0 it *probably* means something's gone wrong!
+
+### 5.8 sendto() and recvfrom()
+
+DATAGRAM style sending and received (for unconnected datagram sockets)
+
+> **Note:** Deferred for now; will get into these later
+
+### 5.9 close() and shutdown()
+
+- `close()` nukes the FD so neither side can use it anymore
+- `shutdown()` gives control; can close one end only or both, like `close()`
+    - We specify this via `how` param
+    - `0`: Disable receiving via this FD 
+    - `1`: Disable sending via this FD
+    - `2`: Disable both; same as `close()`
+    - **Warning:** This function, regardless of `how`, does NOT close the file descriptor; we must use `close()` for this strictly
+
+### 5.10 getpeername()
+
+Tells us who's at the other end of a TCP socket
+> If we established the connection in the first place, shouldn't we already know this? Re: It might be useful when we want the IP as opposed to the DNS name, for example
