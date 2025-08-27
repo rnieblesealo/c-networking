@@ -34,22 +34,48 @@ int main()
     exit(EXIT_FAILURE);
   }
 
+  // allow reuse of socket
+  int yes = 1;
+  setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
   if (connect(sock, res->ai_addr, res->ai_addrlen) != 0)
   {
     perror("Connect failure");
     exit(EXIT_FAILURE);
   }
 
-  const size_t BUFLEN = 64;
-  char         buf[BUFLEN];
-  memset(&buf, 0, BUFLEN);
-
-  sprintf(buf, "Fuck you");
-
-  if (send(sock, buf, strlen(buf), 0) < 0)
+  int connected = 1;
+  while (connected)
   {
-    perror("Send failure");
-    exit(EXIT_FAILURE);
+    // make buf
+    const size_t BUFLEN = 64;
+    char         buf[BUFLEN];
+    memset(&buf, 0, BUFLEN);
+
+    // prompt input
+    fprintf(stdout, "> ");
+    scanf("%s", buf);
+
+    // exit
+    if (strcmp(buf, "q") == 0)
+    {
+      fprintf(stdout, "Exiting...\n");
+      break;
+    }
+
+    // send
+    fprintf(stdout, "Sending %s...\n", buf);
+    int sendres = send(sock, buf, strlen(buf), 0);
+    if (sendres < 0)
+    {
+      perror("Send failure");
+      exit(EXIT_FAILURE);
+    }
+    else if (sendres == 0)
+    {
+      fprintf(stderr, "Will not send, server connection closed\n");
+      break;
+    }
   }
 
   close(sock);

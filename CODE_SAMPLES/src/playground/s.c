@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -33,6 +34,10 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
+  // allow reuse of socket
+  int yes = 1;
+  setsockopt(mysock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
   if (bind(mysock, res->ai_addr, res->ai_addrlen) < 0)
   {
     perror("Bind error");
@@ -54,17 +59,25 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
+  int cyes = 1;
+  setsockopt(connsock, SOL_SOCKET, SO_REUSEADDR, &cyes, sizeof(cyes));
+
   const size_t BUFLEN = 64;
-  char         acceptbuf[BUFLEN];
-  memset(&acceptbuf, 0, BUFLEN);
-
-  if (recv(connsock, acceptbuf, BUFLEN, 0) < 0)
+  int          open   = 1;
+  while (open)
   {
-    perror("Recv error");
-    exit(EXIT_FAILURE);
-  }
+    char acceptbuf[BUFLEN];
+    memset(&acceptbuf, 0, BUFLEN);
 
-  printf("%s", acceptbuf);
+    // FIXME: Why does this hang here?
+    if (recv(connsock, acceptbuf, BUFLEN, 0) < 0)
+    {
+      perror("Recv error");
+      exit(EXIT_FAILURE);
+    }
+
+    printf("%s", acceptbuf);
+  }
 
   close(connsock);
   close(mysock);
