@@ -7,6 +7,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 
 void sigchild_handler(int s)
@@ -21,3 +22,5 @@ void sigchild_handler(int s)
 
   // TODO: Resume here...
 }
+
+int main() { exit(EXIT_SUCCESS); }
