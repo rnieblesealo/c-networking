@@ -1,8 +1,8 @@
 # Learning Networking with C!
 
-Alright motherfuckers listen up
+Alright listen up!!
 
-Im bouta beam some shit across the internet like its 1992
+Im bouta beam some bytes across the internet like its 1992
 
 Watch dis
 
