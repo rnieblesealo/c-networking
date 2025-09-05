@@ -58,7 +58,7 @@ int main()
   setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
 
   // Bind
-  if (bind(sockfd, res->ai_addr, res->ai_addr->sa_len) != 0)
+  if (bind(sockfd, res->ai_addr, res->ai_addrlen) != 0)
   {
     perror("Bind error");
     exit(EXIT_FAILURE);
