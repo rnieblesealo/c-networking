@@ -184,7 +184,7 @@ int main(void)
     {
       close(sockfd); // Close listening socket
 
-      const char *response = "Response\n";
+      const char *response = "Response";
       if (send(connsockfd, response, strlen(response), 0) == -1)
       {
         perror("send");
